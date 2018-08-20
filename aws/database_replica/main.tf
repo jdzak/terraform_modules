@@ -32,6 +32,7 @@ locals {
 }
 
 resource "aws_db_parameter_group" "mod" {
+  provider = "aws"
   count = "${var.parameter_group_provided ? 0 : 1}"
   name = "${local.parameter_group_name}"
   family = "${local.family}"
@@ -43,6 +44,7 @@ resource "aws_db_parameter_group" "mod" {
 }
 
 resource "aws_db_instance" "mod" {
+  provider = "aws"
   identifier = "${var.identifier != "" ? var.identifier : "${var.name}-${var.env}-${local.engine}"}"
   replicate_source_db = "${data.aws_db_instance.source_database.id}"
   engine = "${local.engine}"
@@ -65,6 +67,7 @@ resource "aws_db_instance" "mod" {
 }
 
 resource "aws_security_group" "sg_on_rds_instance" {
+  provider = "aws"
   name = "${local.sg_on_rds_instance_name}"
   description = "${local.sg_on_rds_instance_name}"
   vpc_id = "${var.vpc_id}"
